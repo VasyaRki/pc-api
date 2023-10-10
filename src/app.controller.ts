@@ -14,6 +14,6 @@ export class AppController {
 
   @Get('test')
   test() {
-    return { status: 201 };
+    return { status: 202 };
   }
 }

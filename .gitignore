@@ -30,7 +30,6 @@ lerna-debug.log*
 
 words.txt
 
-.env
 .vscode
 
 # Elastic Beanstalk Files

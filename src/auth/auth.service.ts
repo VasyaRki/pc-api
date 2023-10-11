@@ -66,11 +66,11 @@ export class AuthService {
       throw AuthError.AlreadyExists();
     }
 
-    const hashedPassword = await bcrypt.hash(userRegisterInput.password, 10);
+    const passwordHash = await bcrypt.hash(userRegisterInput.password, 10);
 
     const user = await this.userService.create({
       ...userRegisterInput,
-      password: hashedPassword,
+      passwordHash,
     });
 
     return user;

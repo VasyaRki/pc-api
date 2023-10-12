@@ -76,21 +76,19 @@ export class AuthService {
     return user;
   }
 
-  public async googleAuth(
-    googleAuthInput: GoogleAuthDto,
-  ): Promise<IAuthResponce> {
-    const email = googleAuthInput?.email;
-    const token = googleAuthInput?.accessToken;
+  public async googleAuth(token: string): Promise<IAuthResponce> {
+    const payload = await this.verifyGoogleToken(token);
 
-    const isValidToken = await this.verifyGoogleToken(token);
-    if (!isValidToken) {
+    if (!payload) {
       throw new UnauthorizedException();
     }
+
+    const { email } = payload;
 
     let user = await this.userService.getOne({ email });
 
     if (!user) {
-      const name = googleAuthInput?.firstName;
+      const { name } = payload;
 
       user = await this.userService.create({
         email,
@@ -112,24 +110,16 @@ export class AuthService {
     };
   }
 
-  private async verifyGoogleToken(token: string): Promise<boolean> {
+  private async verifyGoogleToken(token: string): Promise<any> {
     try {
       const googleResponse = await fetch(
-        `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}`,
-        {
-          method: 'GET',
-        },
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token},`,
       );
 
       const googleResponseJSON = await googleResponse.json();
 
-      const { aud } = googleResponseJSON;
-
-      if (
-        googleResponse &&
-        aud === this.configService.get<string>('GOOGLE_CLIENT_ID')
-      ) {
-        return true;
+      if (googleResponse) {
+        return googleResponseJSON;
       } else {
         return false;
       }

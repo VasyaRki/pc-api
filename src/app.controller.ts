@@ -8,8 +8,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    // return this.appService.getHello();
-    return process.env.AAA;
+    return this.appService.getHello();
   }
 
   @Get('test')

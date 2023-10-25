@@ -57,7 +57,7 @@ export class AuthService {
     };
   }
 
-  public async signup(userRegisterInput): Promise<UserEntity> {
+  public async signup(userRegisterInput): Promise<IAuthResponce> {
     const candidate = await this.userService.getOne({
       email: userRegisterInput.email,
     });
@@ -73,7 +73,12 @@ export class AuthService {
       passwordHash,
     });
 
-    return user;
+    const jwtPair = this.jwtService.generatePair({ id: user.id });
+
+    return {
+      ...jwtPair,
+      user,
+    };
   }
 
   public async googleAuth(token: string): Promise<IAuthResponce> {
@@ -108,6 +113,10 @@ export class AuthService {
       user,
       ...jwtPair,
     };
+  }
+
+  public async getCurrentUser(id: number): Promise<UserEntity> {
+    return this.userService.getOne({ id });
   }
 
   private async verifyGoogleToken(token: string): Promise<any> {

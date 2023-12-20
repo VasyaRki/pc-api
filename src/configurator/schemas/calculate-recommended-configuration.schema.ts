@@ -1,16 +1,20 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CalculateRecommendedConfigurationSchema {
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   readonly performance: number;
 
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   readonly budget: number;
 
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   readonly memory: number;
 }
 

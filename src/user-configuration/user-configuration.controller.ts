@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserConfigurationEntity } from './user-configuration.entity';
 import { IJwtPayload } from '../jwt/interfaces/jwt-payload.interface';
@@ -23,7 +23,7 @@ export class UserConfigurationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Delete()
   public async delete(
     @Body() body: DeleteUserConfigurationSchema,
     @IJwtPayloadDecorator() payload: IJwtPayload,

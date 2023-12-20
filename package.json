@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "npm i && npm run deploy",
-    "deploy": "npm ci && npm run build && npm run start:prod",
+    "deploy": "npm run build && npm run start:prod",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -30,7 +30,6 @@
     "db:drop": "node ./dist/database/scripts db:drop",
     "db:fresh": "npm run db:drop && npm run db:create && npm run db:migrate",
     "db:serve-fresh": "npm run db:drop && npm run db:create && npm run serve-migration:run"
-
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -56,6 +55,7 @@
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.0",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

@@ -1,44 +1,43 @@
-# syntax = docker/dockerfile:1
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=16.16.0
-FROM node:${NODE_VERSION}-slim as base
+# PRODUCTION DOCKERFILE
+# ---------------------
+# This Dockerfile allows to build a Docker image of the NestJS application
+# and based on a NodeJS 16 image. The multi-stage mechanism allows to build
+# the application in a "builder" stage and then create a lightweight production
+# image containing the required dependencies and the JS build files.
+# 
+# Dockerfile best practices
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+# Dockerized NodeJS best practices
+# https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md
+# https://www.bretfisher.com/node-docker-good-defaults/
+# http://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
 
-LABEL fly_launch_runtime="NestJS"
+FROM node:16-alpine as builder
 
-# NestJS app lives here
-WORKDIR /app
+ENV NODE_ENV build
 
-# Set production environment
-ENV NODE_ENV="production"
-ARG YARN_VERSION=1.22.21
-RUN npm install -g yarn@$YARN_VERSION --force
+USER node
+WORKDIR /home/node
 
+COPY package*.json ./
+RUN npm ci
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+COPY --chown=node:node . .
+RUN npm run build \
+    && npm prune --production
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python
+# ---
 
-# Install node modules
-COPY --link package-lock.json package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false
+FROM node:16-alpine
 
-# Copy application code
-COPY --link . .
+ENV NODE_ENV production
 
-# Build application
-RUN yarn run build
+USER node
+WORKDIR /home/node
 
+COPY --from=builder --chown=node:node /home/node/package*.json ./
+COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
+COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
 
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD [ "yarn", "run", "start" ]
+CMD ["node", "dist/src/main.js"]

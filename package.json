@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "npm i && npm run deploy",
-    "deploy": "npm run build && npm run start:prod",
+    "deploy": "npm i nest && npm run build && npm run start:prod",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",

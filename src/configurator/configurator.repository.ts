@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { ConfiguratorEntity } from './configurator.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CalculateRecommendedConfigurationSchema } from './schemas/calculate-recommended-configuration.schema';
 import { Injectable } from '@nestjs/common';
 import { IFindConversartions } from './interfaces/find-configurations.interface';
 

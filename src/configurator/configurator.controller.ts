@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ConfiguratorEntity } from './configurator.entity';
 import { ConfiguratorService } from './configurator.service';
 import { CalculateRecommendedConfigurationSchema } from './schemas/calculate-recommended-configuration.schema';
+import { CalculateRecommendedConfigurationResponceSchema } from './schemas/calculate-recommended-configuration-responce.schema';
 
 @Controller('configurator')
 export class ConfiguratorController {
@@ -10,7 +10,7 @@ export class ConfiguratorController {
   @Get()
   public async calculateRecommendedConfiguration(
     @Query() input: CalculateRecommendedConfigurationSchema,
-  ): Promise<ConfiguratorEntity> {
+  ): Promise<CalculateRecommendedConfigurationResponceSchema> {
     return this.configuratorService.calculateRecommendedConfiguration(input);
   }
 }

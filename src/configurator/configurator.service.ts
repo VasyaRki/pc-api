@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfiguratorEntity } from './configurator.entity';
 import { ConfiguratorRepository } from './configurator.repository';
 import { CalculateRecommendedConfigurationSchema } from './schemas/calculate-recommended-configuration.schema';
+import { CalculateRecommendedConfigurationResponceSchema } from './schemas/calculate-recommended-configuration-responce.schema';
 
 const MIN = 5;
 const MAX = 1943;
@@ -13,6 +14,13 @@ const randes = [
   { min: 1455, max: 1943 },
 ];
 
+const ram = {
+  1: 8,
+  2: 16,
+  3: 32,
+  4: 64,
+};
+
 @Injectable()
 export class ConfiguratorService {
   constructor(
@@ -21,7 +29,7 @@ export class ConfiguratorService {
 
   public async calculateRecommendedConfiguration(
     data: CalculateRecommendedConfigurationSchema,
-  ): Promise<ConfiguratorEntity> {
+  ): Promise<CalculateRecommendedConfigurationResponceSchema> {
     const budget = data.budget;
 
     const configurations = await this.configuratorRepository.findConfigurations(
@@ -41,7 +49,12 @@ export class ConfiguratorService {
       budgetConfigurations[0],
     );
 
-    return topConfiguration;
+    return {
+      configuration: topConfiguration,
+      rom: data.memory,
+      ram: ram[data.performance],
+      power: 500,
+    };
   }
 
   public async findOneById(id: number): Promise<ConfiguratorEntity> {

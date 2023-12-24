@@ -33,7 +33,7 @@ async function createDatabase(): Promise<void> {
 
   try {
     await createdb(pgtoolsConfig, DATABASE_NAME);
-    console.log(`Database ${DATABASE_NAME} has been sucсessfully created!`);
+    console.log(`Database ${DATABASE_NAME} has been successfully created!`);
   } catch (error) {
     if (error.name === 'duplicate_database') {
       console.log(`Database ${DATABASE_NAME} already exists!`);
@@ -46,7 +46,7 @@ async function createDatabase(): Promise<void> {
 async function dropDatabase(): Promise<void> {
   try {
     await dropdb(pgtoolsConfig, DATABASE_NAME);
-    console.log(`Database ${DATABASE_NAME} has been sucсessfully dropped!`);
+    console.log(`Database ${DATABASE_NAME} has been successfully dropped!`);
   } catch (error) {
     if (error.name === 'invalid_catalog_name') {
       console.log(`Database ${DATABASE_NAME} does not exist!`);

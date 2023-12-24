@@ -11,15 +11,22 @@ export class UserConfigurationRepository {
     private readonly userConfigurationRepository: Repository<UserConfigurationEntity>,
   ) {}
 
-  public async create(data: ISaveUserConfiguration): Promise<void> {
-    await this.userConfigurationRepository.save(data);
+  public async create(
+    data: ISaveUserConfiguration,
+  ): Promise<UserConfigurationEntity> {
+    return this.userConfigurationRepository.save(data);
   }
 
-  public async delete(userId: number, configurationId: number): Promise<void> {
+  public async delete(
+    userId: number,
+    configurationId: number,
+  ): Promise<boolean> {
     await this.userConfigurationRepository.delete({
       userId,
       configurationId,
     });
+
+    return true;
   }
 
   public async getConfigurationsByUserId(

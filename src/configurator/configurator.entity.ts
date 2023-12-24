@@ -1,21 +1,8 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CpuEntity } from '../cpu/cpu.entity';
 import { GpuEntity } from '../gpu/gpu.entity';
-import { MotherboardEntity } from '../motherboard/motherboard.entity';
-import { UserConfigurationEntity } from 'src/user-configuration/user-configuration.entity';
 
 @Entity('Configurator')
-// @Index(['cpuId', 'gpuId'], { unique: true })
 export class ConfiguratorEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,9 +16,6 @@ export class ConfiguratorEntity {
   @Column({ type: 'varchar' })
   chipset: string;
 
-  // @Column({ type: 'int' })
-  // motherboardId: number;
-
   @Column({ type: 'int' })
   index: number;
 
@@ -40,13 +24,4 @@ export class ConfiguratorEntity {
 
   @ManyToOne(() => GpuEntity, (gpu) => gpu.id)
   gpu: GpuEntity;
-
-  // @ManyToOne(() => MotherboardEntity, (motherboard) => motherboard.id)
-  // motherboard: MotherboardEntity;
-
-  // @OneToMany(
-  //   () => UserConfigurationEntity,
-  //   (userConfiguration) => userConfiguration.configurations,
-  // )
-  // userConfigurations: UserConfigurationEntity[];
 }

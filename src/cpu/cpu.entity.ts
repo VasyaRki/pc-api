@@ -9,7 +9,7 @@ export class CpuEntity {
   id: number;
 
   @Column({ type: 'enum', enum: CpuCompanyEnum })
-  сompany: CpuCompanyEnum;
+  company: CpuCompanyEnum;
 
   @Column({ type: 'varchar' })
   branding: string;

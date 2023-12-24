@@ -7,7 +7,7 @@ import { CalculateRecommendedConfigurationResponceSchema } from './schemas/calcu
 const MIN = 5;
 const MAX = 1943;
 
-const randes = [
+const ranges = [
   { min: 5, max: 485 },
   { min: 485, max: 970 },
   { min: 970, max: 1455 },
@@ -33,13 +33,19 @@ export class ConfiguratorService {
     const budget = data.budget;
 
     const configurations = await this.configuratorRepository.findConfigurations(
-      { budget: budget, performance: randes[data.performance - 1] },
+      { budget: budget, performance: ranges[data.performance - 1] },
     );
+
+    configurations.sort();
 
     const budgetConfigurations = await configurations.filter(
       (configuration) =>
         configuration.cpu.price + configuration.gpu.price <= budget,
     );
+
+    if (budgetConfigurations.length === 0) {
+      budgetConfigurations.push(configurations[0]);
+    }
 
     const topConfiguration = budgetConfigurations.reduce(
       (maxIndexConfiguration, configuration) =>
@@ -53,7 +59,10 @@ export class ConfiguratorService {
       configuration: topConfiguration,
       rom: data.memory,
       ram: ram[data.performance],
-      power: 500,
+      power:
+        Math.ceil(
+          ((topConfiguration.cpu.tdp + topConfiguration.gpu.tdp) * 2.25) / 100,
+        ) * 100,
     };
   }
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { UserConfigurationEntity } from './user-configuration.entity';
+import { ConfiguratorService } from '../configurator/configurator.service';
 import { UserConfigurationRepository } from './user-configuration.repository';
 import { ISaveUserConfiguration } from './interfaces/save-user-configurations.interface';
-import { UserConfigurationEntity } from './user-configuration.entity';
-import { ConfiguratorService } from 'src/configurator/configurator.service';
 
 @Injectable()
 export class UserConfigurationService {
@@ -11,30 +11,24 @@ export class UserConfigurationService {
     private readonly configuratorService: ConfiguratorService,
   ) {}
 
-  public async delete(userId: number, configurationId: number): Promise<void> {
-    await this.userConfigurationRepository.delete(userId, configurationId);
+  public async delete(
+    userId: number,
+    configurationId: number,
+  ): Promise<boolean> {
+    return this.userConfigurationRepository.delete(userId, configurationId);
   }
 
-  public async create(data: ISaveUserConfiguration): Promise<void> {
-    // const configuration = await this.configuratorService.findOneById(
-    //   data.configurationId,
-    // );
-    // console.log(configuration);
-
-    await this.userConfigurationRepository.create({
+  public async create(
+    data: ISaveUserConfiguration,
+  ): Promise<UserConfigurationEntity> {
+    return this.userConfigurationRepository.create({
       ...data,
-      // configuration,
     });
   }
 
   public async getConfigurationsByUserId(
     userId: number,
   ): Promise<UserConfigurationEntity[]> {
-    const res =
-      await this.userConfigurationRepository.getConfigurationsByUserId(userId);
-
-    console.log(res);
-
-    return res;
+    return this.userConfigurationRepository.getConfigurationsByUserId(userId);
   }
 }

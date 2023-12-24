@@ -18,8 +18,11 @@ export class UserConfigurationController {
   public async create(
     @IJwtPayloadDecorator() payload: IJwtPayload,
     @Body() body: SaveUserConfigurationSchema,
-  ) {
-    await this.userConfigurationService.create({ userId: payload.id, ...body });
+  ): Promise<UserConfigurationEntity> {
+    return this.userConfigurationService.create({
+      userId: payload.id,
+      ...body,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -27,8 +30,8 @@ export class UserConfigurationController {
   public async delete(
     @Body() body: DeleteUserConfigurationSchema,
     @IJwtPayloadDecorator() payload: IJwtPayload,
-  ): Promise<void> {
-    await this.userConfigurationService.delete(
+  ): Promise<boolean> {
+    return this.userConfigurationService.delete(
       payload.id,
       body.configurationId,
     );

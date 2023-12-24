@@ -4,9 +4,6 @@ import { ConfiguratorRepository } from './configurator.repository';
 import { CalculateRecommendedConfigurationSchema } from './schemas/calculate-recommended-configuration.schema';
 import { CalculateRecommendedConfigurationResponceSchema } from './schemas/calculate-recommended-configuration-responce.schema';
 
-const MIN = 5;
-const MAX = 1943;
-
 const ranges = [
   { min: 5, max: 485 },
   { min: 485, max: 970 },
@@ -66,8 +63,11 @@ export class ConfiguratorService {
     };
   }
 
-  public async findOneById(id: number): Promise<ConfiguratorEntity> {
-    return this.configuratorRepository.findOneById(id);
+  public async findOneById(
+    id: number,
+    relations?: string[],
+  ): Promise<ConfiguratorEntity> {
+    return this.configuratorRepository.findOneById(id, relations);
   }
 
   private async calculatePercentage(num: number, percentage: number) {

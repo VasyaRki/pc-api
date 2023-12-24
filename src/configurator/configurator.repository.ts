@@ -27,7 +27,10 @@ export class ConfiguratorRepository {
     return query.getMany();
   }
 
-  public async findOneById(id: number): Promise<ConfiguratorEntity> {
-    return this.developerRepository.findOneBy({ id });
+  public async findOneById(
+    id: number,
+    relations?: string[],
+  ): Promise<ConfiguratorEntity> {
+    return this.developerRepository.findOne({ where: { id }, relations });
   }
 }

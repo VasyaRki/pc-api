@@ -6,4 +6,13 @@ export class SaveUserConfigurationSchema {
 
   @IsNotEmpty()
   readonly configurationId: number;
+
+  @IsNotEmpty()
+  readonly rom: number;
+
+  @IsNotEmpty()
+  readonly ram: number;
+
+  @IsNotEmpty()
+  readonly power: number;
 }

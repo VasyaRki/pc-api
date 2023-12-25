@@ -15,6 +15,15 @@ export class UserConfigurationEntity {
   @Column({ type: 'int' })
   configurationId: number;
 
+  @Column({ type: 'int' })
+  rom: number;
+
+  @Column({ type: 'int' })
+  ram: number;
+
+  @Column({ type: 'int' })
+  power: number;
+
   @ManyToOne(() => ConfiguratorEntity, (configuration) => configuration.id)
   configuration: ConfiguratorEntity;
 }

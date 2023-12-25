@@ -8,11 +8,11 @@ export class SaveUserConfigurationSchema {
   readonly configurationId: number;
 
   @IsNotEmpty()
-  readonly rom: number;
+  readonly rom: string;
 
   @IsNotEmpty()
-  readonly ram: number;
+  readonly ram: string;
 
   @IsNotEmpty()
-  readonly power: number;
+  readonly power: string;
 }

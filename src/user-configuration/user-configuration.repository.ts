@@ -37,4 +37,18 @@ export class UserConfigurationRepository {
       relations: ['configuration'],
     });
   }
+
+  public async findOneById(id: number): Promise<UserConfigurationEntity> {
+    const query = await this.userConfigurationRepository.createQueryBuilder(
+      'userConfiguration',
+    );
+
+    query.leftJoinAndSelect('userConfiguration.configuration', 'configuration');
+    query.leftJoinAndSelect('configuration.cpu', 'cpu');
+    query.leftJoinAndSelect('configuration.gpu', 'gpu');
+
+    query.where('userConfiguration.id = :id', { id });
+
+    return query.getOne();
+  }
 }

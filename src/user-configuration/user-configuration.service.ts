@@ -31,4 +31,8 @@ export class UserConfigurationService {
   ): Promise<UserConfigurationEntity[]> {
     return this.userConfigurationRepository.getConfigurationsByUserId(userId);
   }
+
+  public async findOneById(id: number): Promise<UserConfigurationEntity> {
+    return this.userConfigurationRepository.findOneById(id);
+  }
 }

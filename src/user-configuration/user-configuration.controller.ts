@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserConfigurationEntity } from './user-configuration.entity';
 import { IJwtPayload } from '../jwt/interfaces/jwt-payload.interface';
@@ -43,5 +51,13 @@ export class UserConfigurationController {
     @IJwtPayloadDecorator() payload: IJwtPayload,
   ): Promise<UserConfigurationEntity[]> {
     return this.userConfigurationService.getConfigurationsByUserId(payload.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  public async getConfiguration(
+    @Param('id') id: number,
+  ): Promise<UserConfigurationEntity> {
+    return this.userConfigurationService.findOneById(id);
   }
 }

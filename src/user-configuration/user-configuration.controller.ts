@@ -57,7 +57,8 @@ export class UserConfigurationController {
   @Get(':id')
   public async getConfiguration(
     @Param('id') id: number,
+    @IJwtPayloadDecorator() payload: IJwtPayload,
   ): Promise<UserConfigurationEntity> {
-    return this.userConfigurationService.findOneById(id);
+    return this.userConfigurationService.findOneById(payload.id, id);
   }
 }

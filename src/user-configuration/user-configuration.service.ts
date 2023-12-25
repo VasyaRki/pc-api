@@ -21,6 +21,24 @@ export class UserConfigurationService {
   public async create(
     data: ISaveUserConfiguration,
   ): Promise<UserConfigurationEntity> {
+    const alreadyCreatedConfig =
+      await this.userConfigurationRepository.findOneById(
+        data.userId,
+        data.configurationId,
+      );
+
+    if (alreadyCreatedConfig) {
+      await this.userConfigurationRepository.update(
+        alreadyCreatedConfig.id,
+        data.name,
+      );
+
+      return {
+        ...alreadyCreatedConfig,
+        name: data.name,
+      };
+    }
+
     return this.userConfigurationRepository.create({
       ...data,
     });
@@ -32,7 +50,15 @@ export class UserConfigurationService {
     return this.userConfigurationRepository.getConfigurationsByUserId(userId);
   }
 
-  public async findOneById(id: number): Promise<UserConfigurationEntity> {
-    return this.userConfigurationRepository.findOneById(id);
+  public async findOneById(
+    userId: number,
+    configurationId: number,
+  ): Promise<UserConfigurationEntity> {
+    const config = await this.userConfigurationRepository.findOneById(
+      userId,
+      configurationId,
+    );
+
+    return config;
   }
 }

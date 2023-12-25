@@ -17,6 +17,10 @@ export class UserConfigurationRepository {
     return this.userConfigurationRepository.save(data);
   }
 
+  public async update(id: number, name: string): Promise<void> {
+    await this.userConfigurationRepository.update(id, { name });
+  }
+
   public async delete(
     userId: number,
     configurationId: number,
@@ -38,7 +42,10 @@ export class UserConfigurationRepository {
     });
   }
 
-  public async findOneById(id: number): Promise<UserConfigurationEntity> {
+  public async findOneById(
+    userId: number,
+    configurationId: number,
+  ): Promise<UserConfigurationEntity> {
     const query = await this.userConfigurationRepository.createQueryBuilder(
       'userConfiguration',
     );
@@ -47,7 +54,10 @@ export class UserConfigurationRepository {
     query.leftJoinAndSelect('configuration.cpu', 'cpu');
     query.leftJoinAndSelect('configuration.gpu', 'gpu');
 
-    query.where('userConfiguration.id = :id', { id });
+    query.where('userConfiguration.userId = :userId', { userId });
+    query.andWhere('userConfiguration.configurationId = :configurationId', {
+      configurationId,
+    });
 
     return query.getOne();
   }

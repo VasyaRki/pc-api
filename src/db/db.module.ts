@@ -3,6 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { UserEntity } from '../user/user.entity';
+import { CpuEntity } from 'src/cpu/cpu.entity';
+import { GpuEntity } from 'src/gpu/gpu.entity';
+import { MotherboardEntity } from 'src/motherboard/motherboard.entity';
+import { ConfiguratorEntity } from 'src/configurator/configurator.entity';
+import { UserConfigurationEntity } from 'src/user-configuration/user-configuration.entity';
 
 @Module({
   imports: [
@@ -16,7 +21,14 @@ import { UserEntity } from '../user/user.entity';
         username: configService.getOrThrow('DATABASE_USERNAME'),
         password: configService.getOrThrow('DATABASE_PASSWORD'),
         database: configService.getOrThrow('DATABASE_NAME'),
-        entities: [UserEntity],
+        entities: [
+          UserEntity,
+          CpuEntity,
+          GpuEntity,
+          MotherboardEntity,
+          ConfiguratorEntity,
+          UserConfigurationEntity,
+        ],
         synchronize: true,
       }),
     }),

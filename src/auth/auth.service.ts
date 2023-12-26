@@ -1,15 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-
 import * as bcrypt from 'bcryptjs';
-
 import { AuthError } from './errors/auth.error';
+import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { JWT_CONSTANTS } from '../jwt/jwt.constants';
-import { GoogleAuthDto } from './dto/google-auth.dto';
 import { ProviderEnum } from '../user/enums/provider.enum';
 import { JwtService } from '../jwt/interfaces/jwt-service.interface';
-import { UserEntity } from 'src/user/user.entity';
 import { IAuthResponce } from './interfaces/auth-responce.interface';
 
 @Injectable()
